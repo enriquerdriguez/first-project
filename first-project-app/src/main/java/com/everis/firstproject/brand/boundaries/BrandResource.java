@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response.Status;
 import com.everis.firstproject.brand.entity.Brand;
 import com.everis.firstproject.car.exceptions.CarNotFoundException;
 
+@Path("/brand")
 public class BrandResource {
 
 	@Inject
