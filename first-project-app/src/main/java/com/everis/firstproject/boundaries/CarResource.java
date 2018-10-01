@@ -24,6 +24,10 @@ public class CarResource {
 	@Inject
 	private CarService carService;
 	
+	/**
+	 * It returns a Response JSON build of a List with all the cars
+	 * @return
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCars() {
@@ -31,6 +35,12 @@ public class CarResource {
 		return Response.status(Status.OK).entity(cars).build();
 	}
 	
+	/**
+	 * It gets a car according to the id read on the URL. Throws a not found exception if case is given.
+	 * @param id
+	 * @return
+	 * @throws CarNotFoundException
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
@@ -44,6 +54,12 @@ public class CarResource {
 		
 	}	
 	
+	/**
+	 * Creates a Car and persist it on a database.
+	 * @param car
+	 * @return
+	 * @throws Throwable
+	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -58,10 +74,16 @@ public class CarResource {
 		
 	}
 	
+	/**
+	 * Updates a car and persist it on a database
+	 * @param car
+	 * @return
+	 * @throws Throwable
+	 */
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response dCar(Car car) throws Throwable{
+	public Response updateCar(Car car) throws Throwable{
 		try {
 			Car car_updated = carService.updateCar(car);
 			return Response.status(Status.OK).entity(car_updated).build();
@@ -72,6 +94,12 @@ public class CarResource {
 		
 	}
 	
+	/**
+	 * Deletes a car from the database. It needs the id which is read on the URL
+	 * @param id
+	 * @return
+	 * @throws Throwable
+	 */
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)

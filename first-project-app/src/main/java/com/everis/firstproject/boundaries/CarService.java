@@ -32,6 +32,10 @@ public class CarService {
 	@Inject
 	private Notifier notifier;
 	
+	/**
+	 * This method returns a List with all the cars from database.
+	 * @return List <Car>
+	 */
 	@TransactionAttribute(value = TransactionAttributeType.SUPPORTS)
 	public List<Car> getCars(){
 		CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -44,6 +48,11 @@ public class CarService {
 		return cars;
 	}
 	
+	/**
+	 * @param long car_id.
+	 * @exception It throws a not found Car exception in case it doesnt find it.
+	 * @return This method return an object Car, using the Entity Manager to find it.It also sends notification via JMS
+	 */
 	@TransactionAttribute(value = TransactionAttributeType.SUPPORTS)
 	public Car getCar(long car_id) throws CarNotFoundException {
 			
@@ -58,7 +67,11 @@ public class CarService {
 
 	}
 	
-	
+	/**
+	 * @param Car: object type car.
+	 * @exception CarNotValidException: that Car is not valid according to the Object structure.
+	 * @return Car: returns the created car. It also sends notification via JMS
+	 */	
 	public Car createCar(Car car) throws CarNotValidException {
 		
 		//Get current date for registration
@@ -80,6 +93,12 @@ public class CarService {
 		return car;
 	}
 	
+	/**
+	 * @param Car : car to update
+	 * @exception CarNotFoundException @see
+	 * @return Returns the updated car. It also sends notification via JMS
+	 *  
+	 */	
 	public Car updateCar(Car car) {
 		
 		LocalDateTime now = LocalDateTime.now();
@@ -102,6 +121,10 @@ public class CarService {
 		}
 	}
 	
+	/**
+	 * @param long id : Car's id
+	 * @return Car that has been deleted. It also sends notification via JMS
+	 */
 	public Car deleteCar(long car_id) {
 		Car car_toRemove = this.getCar(car_id);
 		this.em.remove(car_toRemove);
