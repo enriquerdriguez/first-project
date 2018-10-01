@@ -14,10 +14,12 @@ import javax.ws.rs.core.Application;
  */
 @ApplicationPath("app")
 public class JAXRSConfiguration extends Application {
+	
     @Override
     public Map<String, Object> getProperties() {
         Map<String, Object> props = new HashMap<>();
         props.put("jersey.config.server.disableMoxyJson", true);
         return props;
     }
+    
 }
