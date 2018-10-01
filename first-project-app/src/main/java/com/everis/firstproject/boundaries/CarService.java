@@ -105,7 +105,7 @@ public class CarService {
 	public Car deleteCar(long car_id) {
 		Car car_toRemove = this.getCar(car_id);
 		this.em.remove(car_toRemove);
-		notifier.sendNotification(car.getId(),car.getBrand(), "DELETED");
+		notifier.sendNotification(car_toRemove.getId(),car_toRemove.getBrand(), "DELETED");
 		return car_toRemove;
 	}
 	
