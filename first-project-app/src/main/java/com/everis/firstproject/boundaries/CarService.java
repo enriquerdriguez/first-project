@@ -1,6 +1,9 @@
 package com.everis.firstproject.boundaries;
 
-import java.math.BigInteger;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,6 +52,15 @@ public class CarService {
 	
 	
 	public Car createCar(Car car) throws CarNotValidException {
+		
+		//Get current date for registration
+		LocalDateTime now = LocalDateTime.now();
+	    Instant instant = now.atZone(ZoneId.systemDefault()).toInstant();
+	    Date date = Date.from(instant);
+	    
+		car.setCreated_at(date);
+		car.setRegistration(date);
+		
 		try {
 		this.em.persist(car);
 		this.em.flush();
@@ -60,10 +72,18 @@ public class CarService {
 	}
 	
 	public Car updateCar(Car car) {
+		
+		LocalDateTime now = LocalDateTime.now();
+	    Instant instant = now.atZone(ZoneId.systemDefault()).toInstant();
+	    Date date = Date.from(instant);		
+	    
 		Car car_to_update = this.getCar(car.getId());
 		if (car_to_update == null) {
 			throw new CarNotFoundException("Car not found");
 		}else {
+			car.setCreated_at(car_to_update.getCreated_at());
+			car.setRegistration(car_to_update.getRegistration());
+			car.setLatest_updated(date);
 			car_to_update.update(car);
 			this.em.persist(car_to_update);
 			this.em.flush();
