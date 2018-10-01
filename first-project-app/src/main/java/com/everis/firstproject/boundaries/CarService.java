@@ -10,12 +10,14 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
+import com.everis.firstproject.JMS.Notifier;
 import com.everis.firstproject.car.entity.Car;
 import com.everis.firstproject.car.exceptions.CarNotFoundException;
 import com.everis.firstproject.car.exceptions.CarNotValidException;
@@ -26,6 +28,9 @@ public class CarService {
 	
 	@PersistenceContext
 	private EntityManager em;
+	
+	@Inject
+	private Notifier notifier;
 	
 	@TransactionAttribute(value = TransactionAttributeType.SUPPORTS)
 	public List<Car> getCars(){
@@ -41,10 +46,13 @@ public class CarService {
 	
 	@TransactionAttribute(value = TransactionAttributeType.SUPPORTS)
 	public Car getCar(long car_id) throws CarNotFoundException {
-
+			
 			Car car = this.em.find(Car.class, car_id);
+			
 			if(car == null) {
 				throw new CarNotFoundException("Car not found");
+			}else {
+				this.notifier.sendNotification(car.getId(),car.getBrand(), "SEARCHED");
 			}
 			return car;
 
@@ -65,6 +73,7 @@ public class CarService {
 		this.em.persist(car);
 		this.em.flush();
 		this.em.refresh(car);
+		notifier.sendNotification(car.getId(),car.getBrand(), "CREATED");
 		}catch(CarNotValidException e) {
 			throw e;
 		}
@@ -88,6 +97,7 @@ public class CarService {
 			this.em.persist(car_to_update);
 			this.em.flush();
 			this.em.refresh(car_to_update);
+			notifier.sendNotification(car.getId(),car.getBrand(), "UPDATED");
 			return car_to_update;
 		}
 	}
@@ -95,6 +105,7 @@ public class CarService {
 	public Car deleteCar(long car_id) {
 		Car car_toRemove = this.getCar(car_id);
 		this.em.remove(car_toRemove);
+		notifier.sendNotification(car.getId(),car.getBrand(), "DELETED");
 		return car_toRemove;
 	}
 	

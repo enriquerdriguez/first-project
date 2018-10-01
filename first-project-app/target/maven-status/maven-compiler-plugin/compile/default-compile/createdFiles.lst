@@ -1,10 +1,1 @@
-com\everis\firstproject\boundaries\CarService.class
-com\everis\firstproject\car\exceptions\CarNotFoundException.class
-com\everis\firstproject\car\exceptions\CarNotValidExceptionMapper.class
-com\everis\firstproject\car\exceptions\CarNotValidException.class
-com\everis\firstproject\car\exceptions\GenericExceptionMapper.class
 com\everis\firstproject\boundaries\CarResource.class
-com\everis\firstproject\JAXRS\JAXRSConfiguration.class
-com\everis\firstproject\car\exceptions\CarNotFoundExceptionMapper.class
-com\everis\firstproject\car\entity\Car.class
-com\everis\firstproject\car\exceptions\ErrorMessage.class
