@@ -61,7 +61,7 @@ public class CarService {
 			if(car == null) {
 				throw new CarNotFoundException("Car not found");
 			}else {
-				this.notifier.sendNotification(car.getId(),car.getBrand(), "SEARCHED");
+				this.notifier.sendNotification(car.getId(),car.getBrand().getName(), "SEARCHED");
 			}
 			return car;
 
@@ -86,7 +86,7 @@ public class CarService {
 		this.em.persist(car);
 		this.em.flush();
 		this.em.refresh(car);
-		notifier.sendNotification(car.getId(),car.getBrand(), "CREATED");
+		notifier.sendNotification(car.getId(),car.getBrand().getName(), "CREATED");
 		}catch(CarNotValidException e) {
 			throw e;
 		}
@@ -116,7 +116,7 @@ public class CarService {
 			this.em.persist(car_to_update);
 			this.em.flush();
 			this.em.refresh(car_to_update);
-			notifier.sendNotification(car.getId(),car.getBrand(), "UPDATED");
+			notifier.sendNotification(car.getId(),car.getBrand().getName(), "UPDATED");
 			return car_to_update;
 		}
 	}
@@ -128,7 +128,7 @@ public class CarService {
 	public Car deleteCar(long car_id) {
 		Car car_toRemove = this.getCar(car_id);
 		this.em.remove(car_toRemove);
-		notifier.sendNotification(car_toRemove.getId(),car_toRemove.getBrand(), "DELETED");
+		notifier.sendNotification(car_toRemove.getId(),car_toRemove.getBrand().getName(), "DELETED");
 		return car_toRemove;
 	}
 	

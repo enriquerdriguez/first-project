@@ -7,9 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.everis.firstproject.brand.entity.Brand;
+import com.everis.firstproject.country.entity.Country;
 
 @Entity
 @Table(name = "CAR")
@@ -19,10 +24,14 @@ public class Car {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID" )
 	private long id;
-	@Column(name = "BRAND", nullable = false)
-	private String brand;
-	@Column(name = "COUNTRY" , nullable = false)
-	private String country;
+	
+	@ManyToOne
+	@JoinColumn(name = "BRAND_ID")
+	private Brand brand;
+	
+	@ManyToOne
+	@JoinColumn(name = "COUNTRY_ID")
+	private Country country;
 	@Column(name = "CREATED_AT" , nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	//private Timestamp created_at;
@@ -59,7 +68,7 @@ public class Car {
 	 * Returns Car's brand
 	 * @return
 	 */
-	public String getBrand() {
+	public Brand getBrand() {
 		return brand;
 	}
 	
@@ -67,7 +76,7 @@ public class Car {
 	 * It sets the new brand for the car
 	 * @param brand String
 	 */
-	public void setBrand(String brand) {
+	public void setBrand(Brand brand) {
 		this.brand = brand;
 	}
 	
@@ -75,7 +84,7 @@ public class Car {
 	 * Return the country where the car was made
 	 * @return String 
 	 */
-	public String getCountry() {
+	public Country getCountry() {
 		return country;
 	}
 	
@@ -83,7 +92,7 @@ public class Car {
 	 * It sets a new country for a car
 	 * @param country String
 	 */
-	public void setCountry(String country) {
+	public void setCountry(Country country) {
 		this.country = country;
 	}
 
