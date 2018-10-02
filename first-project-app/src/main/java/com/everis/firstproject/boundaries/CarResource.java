@@ -17,7 +17,10 @@ import javax.ws.rs.core.Response.Status;
 
 import com.everis.firstproject.car.entity.Car;
 import com.everis.firstproject.car.exceptions.CarNotFoundException;
+import com.everis.firstproject.car.exceptions.CarNotValidException;
+import com.everis.logger.Logged;
 
+@Logged
 @Path("cars")
 public class CarResource {
 
@@ -32,7 +35,11 @@ public class CarResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCars() {
 		List<Car> cars = carService.getCars();
-		return Response.status(Status.OK).entity(cars).build();
+		if(cars != null) {
+			return Response.status(Status.OK).entity(cars).build();			
+		}else {
+			return Response.status(204).entity(cars).build();			
+		}
 	}
 	
 	/**
@@ -45,13 +52,48 @@ public class CarResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
 	public Response getCar(@PathParam("id") long id) throws CarNotFoundException {
+		Response response;
 		try {
 			Car car = this.carService.getCar(id);
-			return Response.status(Status.OK).entity(car).build();
+			if(car != null) {
+				response = Response.status(Status.OK).entity(car).build();				
+			}else {
+				response = Response.status(204).build();				
+			}
 		}catch(CarNotFoundException e) {
-			throw e;
+			response = Response.status(404).build();
 		}
 		
+		return response;
+		
+	}	
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/country/{country}")
+	public Response getCarsByCountry(@PathParam("country") String country) throws CarNotFoundException{
+		Response response;
+		try {
+			List<Car> cars = carService.getCarsByCountry(country.toUpperCase());
+			response = Response.status(Status.OK).entity(cars).build();				
+		}catch(CarNotFoundException e) {
+			response = Response.status(500).build();
+		}
+		return response;
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/brand/{brand}")
+	public Response getCarsByBrand(@PathParam("brand") String brand) throws CarNotFoundException{
+		Response response;
+		try {
+			List<Car> cars = carService.getCarsByBrand(brand.toUpperCase());
+			response = Response.status(Status.OK).entity(cars).build();				
+		}catch(CarNotFoundException e) {
+			response = Response.status(500).build();
+		}
+		return response;
 	}	
 	
 	/**
@@ -63,14 +105,20 @@ public class CarResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createCar(Car car) throws Throwable{
+	public Response createCar(Car car) throws CarNotValidException{
+		Response response;
 		try {
-			Car car_created = carService.createCar(car);
-			return Response.status(Status.OK).entity(car_created).build();
-		}catch(Throwable e) {
-			throw e;
+			Car carCreated = carService.createCar(car);
+			if(carCreated != null) {
+				response =  Response.status(201).entity(carCreated).build();				
+			}else {
+				response =  Response.status(204).entity(carCreated).build();
+			}
+		}catch(CarNotValidException e) {
+			response = Response.status(400).build();
 		}
 		
+		return response;
 		
 	}
 	
@@ -83,14 +131,20 @@ public class CarResource {
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateCar(Car car) throws Throwable{
+	public Response updateCar(Car car) throws CarNotFoundException{
+		Response response;
 		try {
-			Car car_updated = carService.updateCar(car);
-			return Response.status(Status.OK).entity(car_updated).build();
-		}catch(Throwable e) {
-			throw e;
+			Car carUpdated = carService.updateCar(car);
+			if(carUpdated != null) {
+				response = Response.status(201).entity(carUpdated).build();
+			}else {
+				response = Response.status(204).entity(carUpdated).build();				
+			}
+		}catch(CarNotFoundException e) {
+			response = Response.status(400).build();
 		}
 		
+		return response;
 		
 	}
 	
@@ -104,15 +158,19 @@ public class CarResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
-	public Response deleteCar(@PathParam("id") long id) throws Throwable{
+	public Response deleteCar(@PathParam("id") long id) throws CarNotFoundException{
+		Response response;
 		try {
-			Car car_deleted = carService.deleteCar(id);
-			return Response.status(Status.OK).entity(car_deleted).build();
-		}catch(Throwable e) {
-			throw e;
+			Car carDeleted = carService.deleteCar(id);
+			if(carDeleted != null) {
+				response = Response.status(201).entity(carDeleted).build();				
+			}else {				
+				response = Response.status(204).entity(carDeleted).build();				
+			}
+		}catch(CarNotFoundException e) {
+			response = Response.status(400).build();				
 		}
-		
-		
+		return response;
 	}
 	
 }

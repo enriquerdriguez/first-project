@@ -1,9 +1,12 @@
 com\everis\firstproject\boundaries\CarService.class
+com\everis\logger\LoggerInterceptor.class
 com\everis\firstproject\brand\boundaries\BrandResource.class
 com\everis\firstproject\country\boundaries\CountryService.class
 com\everis\firstproject\car\exceptions\CarNotValidException.class
 com\everis\firstproject\car\exceptions\GenericExceptionMapper.class
+com\everis\javaconverter\LocalDateTimeAttributeConverter.class
 com\everis\firstproject\boundaries\CarResource.class
+com\everis\logger\Logged.class
 com\everis\firstproject\brand\boundaries\BrandService.class
 com\everis\firstproject\JAXRS\JAXRSConfiguration.class
 com\everis\firstproject\JMS\Notifier.class
@@ -14,5 +17,6 @@ com\everis\firstproject\car\exceptions\CarNotFoundException.class
 com\everis\firstproject\car\exceptions\CarNotValidExceptionMapper.class
 com\everis\firstproject\country\boundaries\CountryResource.class
 com\everis\firstproject\country\entity\Country.class
+com\everis\javaconverter\LocalDateAttributeConverter.class
 com\everis\firstproject\JMS\Listener.class
 com\everis\firstproject\car\exceptions\CarNotFoundExceptionMapper.class

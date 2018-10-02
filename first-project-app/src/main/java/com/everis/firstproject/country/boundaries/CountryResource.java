@@ -1,5 +1,7 @@
 package com.everis.firstproject.country.boundaries;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -12,6 +14,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.everis.firstproject.car.exceptions.CarNotFoundException;
+import com.everis.firstproject.car.exceptions.CarNotValidException;
 import com.everis.firstproject.country.entity.Country;
 
 @Path("/country")
@@ -21,9 +24,10 @@ public class CountryResource {
 	private CountryService countryService;
 	
 	@GET
-	@Produces(MediaType.TEXT_PLAIN)
-	public String hello() {
-		return "<h1>Hello Country</h1>";
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAll() {
+		List <Country> countries = countryService.getCountry();
+		return Response.status(Status.OK).entity(countries).build();
 		
 	}
 	
@@ -43,11 +47,11 @@ public class CountryResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createCountry(Country country) throws Throwable{
+	public Response createCountry(Country country) throws CarNotValidException{
 		try {
-			Country c_created = countryService.createCountry(country);
-			return Response.status(Status.OK).entity(c_created).build();
-		}catch(Throwable e) {
+			Country countrycreated = countryService.createCountry(country);
+			return Response.status(Status.OK).entity(countrycreated).build();
+		}catch(CarNotValidException e) {
 			throw e;
 		}
 		

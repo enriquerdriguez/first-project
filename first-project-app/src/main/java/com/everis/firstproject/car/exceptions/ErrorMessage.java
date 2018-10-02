@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ErrorMessage {
 	
-	private String errorMessage;
+	private String message;
 	private int errorCode;
 	private String documentation;
 	
@@ -13,23 +13,23 @@ public class ErrorMessage {
 		
 	}
 
-	public ErrorMessage(String errorMessage, int errorCode, String documentation) {
+	public ErrorMessage(String message, int errorCode, String documentation) {
 		super();
-		this.errorMessage = errorMessage;
+		this.message = message;
 		this.errorCode = errorCode;
 		this.documentation = documentation;
 	}
 	
-	public String getErrorMessage() {
-		return errorMessage;
+	public String getMessage() {
+		return message;
 	}
-	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
+	public void setMessage(String message) {
+		this.message = message;
 	}
-	public int getErrorCorde() {
+	public int getCode() {
 		return errorCode;
 	}
-	public void setErrorCorde(int errorCode) {
+	public void setErrorCode(int errorCode) {
 		this.errorCode = errorCode;
 	}
 	public String getDocumentation() {

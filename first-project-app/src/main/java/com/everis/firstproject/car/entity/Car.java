@@ -1,23 +1,30 @@
 package com.everis.firstproject.car.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.everis.firstproject.brand.entity.Brand;
 import com.everis.firstproject.country.entity.Country;
+import com.everis.javaconverter.LocalDateTimeAttributeConverter;
 
 @Entity
 @Table(name = "CAR")
+@NamedQueries({
+	@NamedQuery(name = "Car.getAll", query = "SELECT c FROM Car c"),
+	@NamedQuery(name = "Car.byCountry", query = "SELECT c FROM Car c JOIN c.country co WHERE co.name = :name"),
+	@NamedQuery(name = "Car.byBrand", query = "SELECT c FROM Car c JOIN c.brand br WHERE br.name = :name")
+})
 public class Car {
 	
 	@Id
@@ -32,19 +39,19 @@ public class Car {
 	@ManyToOne
 	@JoinColumn(name = "COUNTRY_ID")
 	private Country country;
-	@Column(name = "CREATED_AT" , nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	//private Timestamp created_at;
-	private Date created_at;
-	@Column(name = "LATEST_UPDATED" , nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	//private Timestamp latest_updated;
-	private Date latest_updated;
-	@Column(name = "REGISTRATION" , nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	//private Timestamp registration;
-	private Date registration;
 	
+	@Column(name = "CREATED_AT" , nullable = false)
+	@Convert(converter = LocalDateTimeAttributeConverter.class)
+	private LocalDateTime createdAt;
+	
+	@Column(name = "LATEST_UPDATED" , nullable = false)
+	@Convert(converter = LocalDateTimeAttributeConverter.class)
+	private LocalDateTime latestUpdated;
+	
+	@Column(name = "REGISTRATION" , nullable = false)
+	@Convert(converter = LocalDateTimeAttributeConverter.class)
+	private LocalDateTime registration;
+
 	
 	
 	/**
@@ -100,39 +107,39 @@ public class Car {
 	 * Returns the date when the car was created
 	 * @return Date
 	 */
-	public Date getCreated_at() {
-		return created_at;
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 
 	/**
 	 * Sets a new date of creation
 	 * @param created_at
 	 */
-	public void setCreated_at(Date created_at) {
-		this.created_at = created_at;
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	/**
 	 * Returns last time the car was updated
 	 * @return Date 
 	 */
-	public Date getLatest_updated() {
-		return latest_updated;
+	public LocalDateTime getLatestUpdated() {
+		return latestUpdated;
 	}
 
 	/**
 	 * Sets last time the car is updated
 	 * @param latest_updated
 	 */
-	public void setLatest_updated(Date latest_updated) {
-		this.latest_updated = latest_updated;
+	public void setLatestUpdated(LocalDateTime latestUpdated) {
+		this.latestUpdated = latestUpdated;
 	}
 
 	/**
 	 * Returns when the car was registered
 	 * @return Date
 	 */
-	public Date getRegistration() {
+	public LocalDateTime getRegistration() {
 		return registration;
 	}
 
@@ -140,7 +147,7 @@ public class Car {
 	 * Set a new date for car registration
 	 * @param registration Date
 	 */
-	public void setRegistration(Date registration) {
+	public void setRegistration(LocalDateTime registration) {
 		this.registration = registration;
 	}
 	
@@ -152,8 +159,8 @@ public class Car {
 		this.brand = car.getBrand();
 		this.country = car.getCountry();
 		this.registration = car.getRegistration();
-		this.created_at = car.getCreated_at();
-		this.latest_updated = car.getLatest_updated();
+		this.createdAt = car.getCreatedAt();
+		this.latestUpdated = car.getLatestUpdated();
 	}
 	
 	

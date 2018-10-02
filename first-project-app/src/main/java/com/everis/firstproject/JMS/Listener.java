@@ -10,7 +10,7 @@ import javax.jms.MessageListener;
 @MessageDriven(mappedName = "jms/carNotificationQueue")
 public class Listener implements MessageListener{
 
-	private final static Logger LOG = Logger.getLogger(Listener.class.getName());
+	private static final  Logger LOG = Logger.getLogger(Listener.class.getName());
 	
 	@Override
 	public void onMessage(Message message) {
@@ -18,7 +18,8 @@ public class Listener implements MessageListener{
 			long id = message.getLongProperty("ID");
 			String brand = message.getStringProperty("BRAND");
 			String action = message.getStringProperty("ACTION");
-			LOG.info("Car number: "+id+" branded: "+brand+" has been: "+action);
+			String mensaje = "Car number: " + id + " branded: " + brand +" has been: "+ action; 
+			LOG.info(mensaje);
 		}catch(JMSException e) {
 			e.printStackTrace();
 		}

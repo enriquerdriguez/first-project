@@ -1,0 +1,15 @@
+REQUEST CALLS
+
+#POST
+
+{
+	"brand":{"id":2,"name":"MERCEDES"},
+	"country":{"id":2,"name":"SPAIN"}
+}
+
+-----------------------------------
+
+{
+	"brand":{"id":3},
+	"country":{"id":3}
+}
