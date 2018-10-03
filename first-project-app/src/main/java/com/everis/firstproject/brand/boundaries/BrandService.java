@@ -1,7 +1,7 @@
 package com.everis.firstproject.brand.boundaries;
 
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -13,7 +13,6 @@ import javax.persistence.Query;
 
 import com.everis.firstproject.brand.entity.Brand;
 import com.everis.firstproject.car.exceptions.CarNotFoundException;
-import com.everis.firstproject.car.exceptions.CarNotValidException;
 
 @Named
 @Stateless
@@ -43,13 +42,9 @@ public class BrandService {
 	}
 	
 	public Brand createBrand (Brand brand) {
-		try {
-			this.em.persist(brand);
-			this.em.flush();
-			this.em.refresh(brand);
-		}catch(CarNotValidException e) {
-			throw e;
-		}
+		this.em.persist(brand);
+		this.em.flush();
+		this.em.refresh(brand);
 		return brand;
 	}
 }

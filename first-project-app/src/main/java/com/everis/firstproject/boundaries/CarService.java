@@ -28,15 +28,18 @@ public class CarService {
 	@Inject
 	private Notifier notifier;
 	
+	private static final String CAR_NOT_FOUND = "Car not found";
+	
 	/**
 	 * This method returns a List with all the cars from database.
 	 * @return List <Car>
 	 */
 	@TransactionAttribute(value = TransactionAttributeType.SUPPORTS)
 	public List<Car> getCars(){
-		
+		 
 		Query query = this.em.createNamedQuery("Car.getAll");
 		List <Car> cars = (List<Car>) query.getResultList();
+		
 		if(cars == null || cars.isEmpty()) {
 			return new LinkedList <>();
 		}
@@ -49,12 +52,12 @@ public class CarService {
 	 * @return This method return an object Car, using the Entity Manager to find it.It also sends notification via JMS
 	 */
 	@TransactionAttribute(value = TransactionAttributeType.SUPPORTS)
-	public Car getCar(long carId) throws CarNotFoundException {
+	public Car getCar(long carId) {
 			
 			Car car = this.em.find(Car.class, carId);
 			
 			if(car == null) {
-				throw new CarNotFoundException("Car not found");
+				throw new CarNotFoundException(CAR_NOT_FOUND);
 			}else {
 				this.notifier.sendNotification(car.getId(),car.getBrand().getName(), "SEARCHED");
 			}
@@ -107,7 +110,7 @@ public class CarService {
 	 * @exception CarNotValidException: that Car is not valid according to the Object structure.
 	 * @return Car: returns the created car. It also sends notification via JMS
 	 */	
-	public Car createCar(Car car) throws CarNotValidException {
+	public Car createCar(Car car) {
 		
 		//Get current date for registration
 		LocalDateTime now = LocalDateTime.now();
@@ -116,13 +119,10 @@ public class CarService {
 		car.setCreatedAt(now);
 		car.setRegistration(now);
 		
-		try {
 		this.em.persist(car);
 		notifier.sendNotification(car.getId(),car.getBrand().getName(), "CREATED");
-		}catch(CarNotValidException e) {
-			throw e;
-		}
 		return car;
+		
 	}
 	
 	/**
@@ -134,20 +134,16 @@ public class CarService {
 	public Car updateCar(Car car) {
 		
 		LocalDateTime now = LocalDateTime.now();
-	
-	    
+
 		Car carToUpdate = this.getCar(car.getId());
-		if (carToUpdate == null) {
-			throw new CarNotFoundException("Car not found");
-		}else {
-			car.setCreatedAt(carToUpdate.getCreatedAt());
-			car.setRegistration(carToUpdate.getRegistration());
-			car.setLatestUpdated(now);
-			carToUpdate.update(car);
-			this.em.persist(carToUpdate);
-			notifier.sendNotification(car.getId(),car.getBrand().getName(), "UPDATED");
-			return carToUpdate;
-		}
+		car.setCreatedAt(carToUpdate.getCreatedAt());
+		car.setRegistration(carToUpdate.getRegistration());
+		car.setLatestUpdated(now);
+		carToUpdate.update(car);
+		this.em.merge(carToUpdate);
+		notifier.sendNotification(car.getId(),car.getBrand().getName(), "UPDATED");
+		return carToUpdate;
+		
 	}
 	
 	/**
@@ -155,9 +151,11 @@ public class CarService {
 	 * @return Car that has been deleted. It also sends notification via JMS
 	 */
 	public Car deleteCar(long carId) {
+		
 		Car cartoRemove = this.getCar(carId);
 		this.em.remove(cartoRemove);
 		notifier.sendNotification(cartoRemove.getId(),cartoRemove.getBrand().getName(), "DELETED");
+		
 		return cartoRemove;
 	}
 	

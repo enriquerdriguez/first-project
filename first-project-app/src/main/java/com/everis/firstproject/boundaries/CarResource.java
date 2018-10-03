@@ -51,7 +51,7 @@ public class CarResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
-	public Response getCar(@PathParam("id") long id) throws CarNotFoundException {
+	public Response getCar(@PathParam("id") long id) {
 		Response response;
 		try {
 			Car car = this.carService.getCar(id);
@@ -71,7 +71,7 @@ public class CarResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/country/{country}")
-	public Response getCarsByCountry(@PathParam("country") String country) throws CarNotFoundException{
+	public Response getCarsByCountry(@PathParam("country") String country) {
 		Response response;
 		try {
 			List<Car> cars = carService.getCarsByCountry(country.toUpperCase());
@@ -85,7 +85,7 @@ public class CarResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/brand/{brand}")
-	public Response getCarsByBrand(@PathParam("brand") String brand) throws CarNotFoundException{
+	public Response getCarsByBrand(@PathParam("brand") String brand){
 		Response response;
 		try {
 			List<Car> cars = carService.getCarsByBrand(brand.toUpperCase());
@@ -105,7 +105,7 @@ public class CarResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createCar(Car car) throws CarNotValidException{
+	public Response createCar(Car car){
 		Response response;
 		try {
 			Car carCreated = carService.createCar(car);
@@ -131,7 +131,7 @@ public class CarResource {
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateCar(Car car) throws CarNotFoundException{
+	public Response updateCar(Car car){
 		Response response;
 		try {
 			Car carUpdated = carService.updateCar(car);
@@ -158,7 +158,7 @@ public class CarResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
-	public Response deleteCar(@PathParam("id") long id) throws CarNotFoundException{
+	public Response deleteCar(@PathParam("id") long id){
 		Response response;
 		try {
 			Car carDeleted = carService.deleteCar(id);

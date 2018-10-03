@@ -34,7 +34,7 @@ public class CountryResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
-	public Response getCountry(@PathParam("id") long id) throws CarNotFoundException {
+	public Response getCountry(@PathParam("id") long id){
 		try {
 			Country country = this.countryService.getCountry(id);
 			return Response.status(Status.OK).entity(country).build();
@@ -47,7 +47,7 @@ public class CountryResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createCountry(Country country) throws CarNotValidException{
+	public Response createCountry(Country country) {
 		try {
 			Country countrycreated = countryService.createCountry(country);
 			return Response.status(Status.OK).entity(countrycreated).build();

@@ -53,6 +53,21 @@ public class Car {
 	private LocalDateTime registration;
 
 	
+	public Car(){
+		
+	}
+	
+	
+	public Car(long id, Brand brand, Country country) {
+
+        this.id= id;
+        this.brand = brand;
+        this.country = country;
+        this.registration = null;
+        this.latestUpdated = null;
+        this.createdAt = null;
+    }
+    
 	
 	/**
 	 * Return Car's id
